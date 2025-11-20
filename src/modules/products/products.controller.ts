@@ -9,6 +9,14 @@ export const createProduct = async (req: Request, res: Response) => {
         .status(400)
         .json({ message: "Name and description are required" });
     }
+    const existingProduct = await prisma.product.findFirst({
+      where: { code, userId: Number(userId) },
+    });
+    if (existingProduct) {
+      return res
+        .status(409)
+        .json({ message: "Un producto con este código ya existe" });
+    }
     const newProduct = await prisma.product.create({
       data: {
         name,
