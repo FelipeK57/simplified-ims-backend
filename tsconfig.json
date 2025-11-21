@@ -5,5 +5,7 @@
     "target": "ES2023",
     "strict": true,
     "esModuleInterop": true
-  }
+    // "typeRoots": ["./src/types", "./node_modules/@types"]
+  },
+  "include": ["src/**/*"]
 }

@@ -13,13 +13,28 @@ datasource db {
   provider = "postgresql"
 }
 
+model Store {
+  id          Int       @id @default(autoincrement())
+  name        String
+
+  users       User[]
+  products    Product[]
+  
+  createdAt   DateTime  @default(now())
+}
+
 model User {
   id        Int     @id @default(autoincrement())
   name      String
   email     String  @unique
   password  String
 
-  products  Product[]
+  role      String  @default("owner")
+
+  storeId   Int
+  store     Store   @relation(fields: [storeId], references: [id])
+
+  createdAt   DateTime  @default(now())
 }
 
 model Product {
@@ -27,8 +42,18 @@ model Product {
   name          String
   code          String
   description   String
-  createdAt     DateTime  @default(now())
 
-  userId        Int
-  user          User    @relation(fields: [userId], references: [id])
+  price         Float
+  cost          Float?
+
+  stock         Int       @default(0)
+  isActive      Boolean   @default(true)
+
+  category      String?
+  imageUrl      String? 
+
+  storeId       Int
+  store         Store     @relation(fields: [storeId], references: [id])
+  
+  createdAt     DateTime  @default(now())
 }

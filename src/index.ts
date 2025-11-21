@@ -8,6 +8,7 @@ app.use(
   cors({
     origin: ["http://localhost:5173"],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    credentials: true,
   })
 );
 
@@ -21,7 +22,7 @@ app.use("/auth", authRoutes);
 app.use("/products", productRoutes);
 
 app.get("/", (req, res) => {
-  res.send("¡Hola, mundo!");
+  res.send("Servidor de IMS funcionando correctamente");
 });
 
 app.listen(PORT, () => {

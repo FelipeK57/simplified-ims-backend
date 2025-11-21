@@ -4,8 +4,15 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+export interface AuthPayload {
+  userId: number;
+  storeId: number;
+  role: string;
+  email: string;
+}
+
 export interface AuthRequest extends Request {
-  user?: any;
+  auth?: AuthPayload;
 }
 
 export const authMiddleware = (
@@ -20,7 +27,12 @@ export const authMiddleware = (
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
-    req.user = decoded;
+    req.auth = {
+      userId: (decoded as any).id,
+      storeId: (decoded as any).storeId,
+      role: (decoded as any).role,
+      email: (decoded as any).email,
+    };
     next();
   } catch {
     return res.status(401).json({ message: "Invalid token" });
